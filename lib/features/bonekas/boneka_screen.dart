@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
-import '../../providers/pahlawan_provider.dart';
+import '../../providers/boneka_provider.dart';
 import '../../core/theme/theme_notifier.dart';
 
-class PahlawanScreen extends StatefulWidget {
+class BonekaScreen extends StatefulWidget {
   @override
-  State<PahlawanScreen> createState() => _PahlawanScreenState();
+  State<BonekaScreen> createState() => _BonekaScreenState();
 }
 
-class _PahlawanScreenState extends State<PahlawanScreen> {
+class _BonekaScreenState extends State<BonekaScreen> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -19,12 +19,12 @@ class _PahlawanScreenState extends State<PahlawanScreen> {
 
     // Perbaikan 1: Tunggu frame pertama selesai di-build sebelum memanggil provider
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<PahlawanProvider>().fetchPahlawans();
+      context.read<BonekaProvider>().fetchBonekas();
     });
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-        context.read<PahlawanProvider>().fetchPahlawans();
+        context.read<BonekaProvider>().fetchBonekas();
       }
     });
   }
@@ -46,18 +46,18 @@ class _PahlawanScreenState extends State<PahlawanScreen> {
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) {
-        return Consumer<PahlawanProvider>(
+        return Consumer<BonekaProvider>(
           builder: (context, provider, _) {
             return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-              title: Text("✨ Generate Pahlawan"),
+              title: Text("✨ Generate AI Boneka"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: themeController,
                     decoration: InputDecoration(
-                      labelText: "Tema Pahlawan (Misal: Pahlawan Indonesia)",
+                      labelText: "Tema Boneka (Misal: Boneka Indonesia)",
                       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                   ),
@@ -108,12 +108,12 @@ class _PahlawanScreenState extends State<PahlawanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<PahlawanProvider>();
+    final provider = context.watch<BonekaProvider>();
     final theme = context.watch<ThemeNotifier>();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Info Pahlawan", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("AI Boneka", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: false,
         actions: [
           IconButton(icon: Icon(Icons.dark_mode), onPressed: theme.toggleTheme),
@@ -133,10 +133,10 @@ class _PahlawanScreenState extends State<PahlawanScreen> {
             child: ListView.builder(
               controller: _scrollController,
               padding: EdgeInsets.only(bottom: 120),
-              itemCount: provider.pahlawans.length + 1,
+              itemCount: provider.bonekas.length + 1,
               itemBuilder: (context, index) {
-                if (index < provider.pahlawans.length) {
-                  final item = provider.pahlawans[index];
+                if (index < provider.bonekas.length) {
+                  final item = provider.bonekas[index];
                   final number = index + 1;
 
                   return Container(
